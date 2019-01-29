@@ -1,0 +1,4 @@
+port: 8086
+store:
+  cloud: gcs
+  bucket: [BUCKET]
