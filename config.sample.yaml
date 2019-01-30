@@ -1,4 +1,10 @@
-port: 8086
+listen_port: 8678
 store:
-  cloud: gcs
-  bucket: [BUCKET]
+  cloud: gcp
+  bucket: test
+backends:
+  central:
+    prefix: central
+    repo_type: mvn
+    url: http://central.maven.org/maven2/
+    cache_duration: 2h

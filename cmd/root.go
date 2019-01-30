@@ -78,6 +78,12 @@ func initConfig() {
 	}
 
 	log.WithField("configFile", cfgFile).Debug("Reading config")
+
+	_, err := os.Stat(cfgFile)
+	if os.IsNotExist(err) {
+		log.WithError(err).Error("no config file")
+		os.Exit(-1)
+	}
 	configFile, err := os.Open(cfgFile)
 	if err != nil {
 		log.Panic(err)
@@ -89,7 +95,8 @@ func initConfig() {
 	config = proxy.ServerConfig{}
 	err = yaml.Unmarshal(configBytes, &config)
 	if err != nil {
-		log.Panic(err)
+		log.WithError(err).Error("config parse error")
+		os.Exit(-1)
 	}
 	log.WithField("configFile", cfgFile).WithField("config", config).Debug("Config read success")
 }

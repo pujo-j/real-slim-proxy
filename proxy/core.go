@@ -15,21 +15,24 @@ type Proxy struct {
 	bucket   *blob.Bucket
 }
 
-type Backend interface {
-}
-
-type BackendConfig struct {
-}
-
 type ServerConfig struct {
-	Port     int
-	Store    StoreConfig
-	Backends map[string]BackendConfig
+	Port     int                      `yaml:"listen_port"`
+	Store    StoreConfig              `yaml:"store"`
+	Backends map[string]BackendConfig `yaml:"backends"`
 }
 
 func (s *ServerConfig) applyDefaults() {
 	if s.Port == 0 {
 		s.Port = 8678
+	}
+	if s.Store.Cloud == "" {
+		s.Store.Cloud = "gcp"
+	}
+	for name, backend := range s.Backends {
+		if backend.Type == "" {
+			backend.Type = "mvn"
+		}
+		s.Backends[name] = backend
 	}
 }
 
