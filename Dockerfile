@@ -6,7 +6,8 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 RUN addgroup -g 110 -S slim && adduser -h /app -u 110 -G slim -D slim
 USER 110:110
-WORKDIR /app
+WORKDIR /config
 COPY real-slim-proxy /app/
 VOLUME ["/config"]
-CMD ./real-slim-proxy --config /config/config.yaml
+CMD /app/real-slim-proxy
+
