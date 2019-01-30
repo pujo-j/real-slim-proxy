@@ -57,6 +57,16 @@ func NewServer(config ServerConfig) (*Proxy, error) {
 		Server:   server,
 		Backends: map[string]Backend{},
 	}
+	for k, v := range config.Backends {
+		switch v.Type {
+		case "mvn":
+			var backend = NewMvnBackend(v)
+			res.Backends[k] = backend
+			break
+		default:
+			log.Panic("Unknown backend type:", v.Type)
+		}
+	}
 	server.Handler = http.HandlerFunc(res.handler)
 	return res, nil
 }

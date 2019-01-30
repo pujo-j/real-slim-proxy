@@ -15,7 +15,7 @@ type StoreConfig struct {
 
 func (s *StoreConfig) OpenStore(ctx context.Context) (*blob.Bucket, error) {
 	switch s.Cloud {
-	case "gcs":
+	case "gcp":
 		creds, err := gcp.DefaultCredentials(ctx)
 		if err != nil {
 			return nil, err
