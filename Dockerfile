@@ -9,5 +9,5 @@ USER 110:110
 WORKDIR /config
 COPY real-slim-proxy /app/
 VOLUME ["/config"]
-CMD /app/real-slim-proxy
+ENTRYPOINT ["/app/real-slim-proxy"]
 
