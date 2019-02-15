@@ -17,6 +17,7 @@ type Proxy struct {
 
 type ServerConfig struct {
 	Port     int                      `yaml:"listen_port"`
+	Iface    string                   `yaml:"listen_address"`
 	Store    StoreConfig              `yaml:"store"`
 	Backends map[string]BackendConfig `yaml:"backends"`
 }
@@ -50,8 +51,10 @@ func NewServer(config ServerConfig) (*Proxy, error) {
 		log.WithError(err).Error("listing bucket")
 	}
 
-	log.WithField("listObject", l).Debug("First file found")
-	server := &http.Server{Addr: fmt.Sprintf("127.0.0.1:%d", config.Port)}
+	if config.Iface == "" {
+		config.Iface = "127.0.0.1"
+	}
+	server := &http.Server{Addr: fmt.Sprintf("%s:%d", config.Iface, config.Port)}
 	res := &Proxy{
 		bucket:   bucket,
 		Server:   server,

@@ -8,6 +8,7 @@ RUN addgroup -g 110 -S slim && adduser -h /app -u 110 -G slim -D slim
 USER 110:110
 WORKDIR /config
 COPY real-slim-proxy /app/
+EXPOSE 8678
 VOLUME ["/config"]
 ENTRYPOINT ["/app/real-slim-proxy"]
 
